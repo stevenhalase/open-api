@@ -21,6 +21,42 @@ const server = hapi.server({
   }
 });
 
+const io = require('socket.io')(server.listener);
+
+class SocketHandler {
+  constructor(io) {
+    this._io = io;
+    this._init();
+  }
+
+  _init() {
+    this._io.sockets.on('connection', (socket) => {
+			console.log('connected');
+			socket.emit('connection_server', 'hello');
+			console.log('sent');
+		});
+    this._io.on('contact_request', (socket) => {
+			console.log('contact_request');
+			socket.emit('contact_request_server', 'thanks');
+			console.log('sent');
+		});
+  }
+
+  // _connection(socket) {
+  //   console.log('connected');
+  //   socket.emit('connection_server', 'hello');
+  //   console.log('sent');
+  // }
+
+  // _contactRequest(socket) {
+  //   console.log('contact_request');
+  //   socket.emit('contact_request_server');
+  //   console.log('sent');
+  // }
+}
+
+const socketHandler = new SocketHandler(io);
+
 const init = async () => {
 
   await server.register([
