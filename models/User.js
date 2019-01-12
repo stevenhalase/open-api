@@ -6,11 +6,15 @@ const UserSchema = new Schema({
   password: String,
   name: String,
   image: String,
-  contacts: [{ ref: 'User' }]
+  contacts: [{ ref: 'User' }],
+  outgoingContactRequests: [{ ref: 'User' }],
+  incomingContactRequests: [{ ref: 'User' }]
 });
 
 const autoPopulate = function(next) {
   this.populate({ path: 'contacts', model: 'User' });
+  this.populate({ path: 'outgoingContactRequests', model: 'User' });
+  this.populate({ path: 'incomingContactRequests', model: 'User' });
   next();
 };
 

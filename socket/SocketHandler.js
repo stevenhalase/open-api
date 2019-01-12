@@ -11,13 +11,11 @@ module.exports = class SocketHandler {
 
   _connection(socket) {
     console.log('connected');
-    socket.emit('connection_server');
-    console.log('sent');
+    this._io.to(socket.socketid).emit('connection_server');
   }
 
   _contactRequest(socket) {
     console.log('contact_request');
-    socket.emit('contact_request_server');
-    console.log('sent');
+    this._io.to(socket.socketid).emit('contact_request_server');
   }
 }
